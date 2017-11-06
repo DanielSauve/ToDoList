@@ -46,7 +46,7 @@ class _ToDoListState extends State<ToDoList> {
       ),
       body: new Center(
         child: new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: items,
         ),
       ),
