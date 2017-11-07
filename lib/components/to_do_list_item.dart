@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import '../model/to_do.dart';
 
 class ToDoListItem extends StatefulWidget {
+  ToDoListItem({this.toDo});
+
+  final ToDo toDo;
+
   @override
   State<StatefulWidget> createState() {
     return new _ToDoState();
@@ -11,18 +15,19 @@ class ToDoListItem extends StatefulWidget {
 }
 
 class _ToDoState extends State<ToDoListItem> {
-  ToDo toDo = new ToDo(false, "Test Item");
   @override
   Widget build(BuildContext context) {
     return new Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        new Checkbox(value: this.toDo.completed, onChanged: _onChanged),
+        new Checkbox(value: widget.toDo.completed, onChanged: _onChanged),
         new Flexible(
             child: new Text(
-          this.toDo.name,
-          style: new TextStyle(fontSize: 16.0,),
+          widget.toDo.name,
+          style: new TextStyle(
+            fontSize: 16.0,
+          ),
         )),
       ],
     );
@@ -30,8 +35,8 @@ class _ToDoState extends State<ToDoListItem> {
 
   _onChanged(bool value) {
     this.setState(() {
-      this.toDo.updated = new DateTime.now();
-      this.toDo.completed = value;
+      widget.toDo.updated = new DateTime.now();
+      widget.toDo.completed = value;
     });
   }
 }

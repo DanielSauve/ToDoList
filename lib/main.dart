@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'components/to_do_list_item.dart';
+import 'model/to_do.dart';
 
 void main() {
   runApp(new MyApp());
@@ -30,11 +31,11 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  List<Widget> items = [];
+  List<ToDo> items = [];
 
   void _addNewItem() {
     setState(() {
-      items.add(new ToDoListItem());
+      items.add(new ToDo(false, items.length.toString()));
     });
   }
 
@@ -45,9 +46,13 @@ class _ToDoListState extends State<ToDoList> {
         title: new Text(widget.title),
       ),
       body: new Center(
-        child: new Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: items,
+        child: new ListView(
+          children: <Widget>[
+            new Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: items.map((i) => new ToDoListItem(toDo: i)).toList(),
+            )
+          ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
