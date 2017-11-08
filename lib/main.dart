@@ -47,12 +47,7 @@ class _ToDoListState extends State<ToDoList> {
       ),
       body: new Center(
         child: new ListView(
-          children: <Widget>[
-            new Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: items.map((i) => new ToDoListItem(toDo: i)).toList(),
-            )
-          ],
+          children: items.map((i) => new ToDoListItem(toDo: i)).toList(),
         ),
       ),
       floatingActionButton: new FloatingActionButton(
