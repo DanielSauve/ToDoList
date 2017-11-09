@@ -34,9 +34,28 @@ class _ToDoListState extends State<ToDoList> {
   List<ToDo> items = [];
 
   void _addNewItem() {
-    setState(() {
-      items.add(new ToDo(false, items.length.toString()));
-    });
+    final TextEditingController _controller = new TextEditingController();
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Add New ToDo"),
+          content: new TextField(
+            controller: _controller,
+          ),
+          actions: <Widget>[
+            new FlatButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: new Text("Cancel")),
+            new FlatButton(
+                onPressed: () {
+                  setState(() {
+                    items.add(new ToDo(false, _controller.text));
+                  });
+                  Navigator.of(context).pop();
+                },
+                child: new Text("Save"))
+          ],
+        ));
   }
 
   @override
