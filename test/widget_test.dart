@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/main.dart';
+import '../lib/components/to_do_list_item.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -22,9 +23,18 @@ void main() {
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
+    expect(find.text('Save'), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.byType(TextField), findsOneWidget);
+    expect(find.byType(FlatButton), findsNWidgets(2));
+
+    await tester.enterText(find.byType(TextField), "Test ToDoList");
+    await tester.tap(find.byType(FlatButton).at(1));
+    await tester.pump();
+
     // Verify that our counter has incremented.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-    expect(find.text('2'), findsNothing);
+    expect(find.text('Not in List'), findsNothing);
+    expect(find.text('Test ToDoList'),findsOneWidget);
+    expect(find.byType(ToDoListItem), findsOneWidget);
   });
 }
