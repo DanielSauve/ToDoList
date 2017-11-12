@@ -49,7 +49,11 @@ class _ToDoListState extends State<ToDoList> {
             new FlatButton(
                 onPressed: () {
                   setState(() {
-                    items.add(new ToDo(false, _controller.text));
+                    items.add(new ToDo()
+                      ..name = _controller.text
+                      ..completed = false
+                      ..created = new DateTime.now()
+                      ..updated = new DateTime.now());
                   });
                   Navigator.of(context).pop();
                 },

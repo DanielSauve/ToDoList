@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../lib/main.dart';
 import '../lib/components/to_do_list_item.dart';
+import '../lib/model/to_do.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
@@ -34,7 +35,33 @@ void main() {
 
     // Verify that our counter has incremented.
     expect(find.text('Not in List'), findsNothing);
-    expect(find.text('Test ToDoList'),findsOneWidget);
+    expect(find.text('Test ToDoList'), findsOneWidget);
     expect(find.byType(ToDoListItem), findsOneWidget);
+  });
+
+  test("Test ToDoSerializer", () async {
+    ToDo toDo = new ToDo()
+      ..name = "Test ToDoSerializer"
+      ..completed = true
+      ..created = new DateTime(2016)
+      ..updated = new DateTime(2017);
+    assert(new ToDoSerializer().toJson(toDo) ==
+        '{\n'
+        '  "completed": true,\n'
+        '  "name": "Test ToDoSerializer",\n'
+        '  "created": 1451624400000,\n'
+        '  "updated": 1483246800000\n'
+        '}');
+
+    toDo = new ToDoSerializer().fromJSON('{\n'
+        '  "completed": true,\n'
+        '  "name": "Test ToDoSerializer",\n'
+        '  "created": 1451624400000,\n'
+        '  "updated": 1483246800000\n'
+        '}');
+    assert(toDo.name == "Test ToDoSerializer");
+    assert(toDo.completed == true);
+    assert(toDo.created == new DateTime(2016));
+    assert(toDo.updated == new DateTime(2017));
   });
 }
