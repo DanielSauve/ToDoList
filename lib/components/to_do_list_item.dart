@@ -9,7 +9,7 @@ class ToDoListItem extends StatefulWidget {
   final ToDo toDo;
 
   @override
-  State<StatefulWidget> createState() {
+  _ToDoState createState() {
     return new _ToDoState();
   }
 }

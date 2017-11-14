@@ -4,6 +4,8 @@
 // find child widgets in the widget tree, read text, and verify that the values of widget properties
 // are correct.
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -46,22 +48,34 @@ void main() {
       ..created = new DateTime(2016)
       ..updated = new DateTime(2017);
     assert(new ToDoSerializer().toJson(toDo) ==
-        '{\n'
-        '  "completed": true,\n'
-        '  "name": "Test ToDoSerializer",\n'
-        '  "created": 1451624400000,\n'
-        '  "updated": 1483246800000\n'
-        '}');
+        '{"completed": true, "name": "Test ToDoSerializer", "created": 1451624400000, "updated": 1483246800000}');
 
-    toDo = new ToDoSerializer().fromJSON('{\n'
-        '  "completed": true,\n'
-        '  "name": "Test ToDoSerializer",\n'
-        '  "created": 1451624400000,\n'
-        '  "updated": 1483246800000\n'
+    toDo = new ToDoSerializer().fromJSON('{'
+        '"completed": true,'
+        ' "name": "Test ToDoSerializer",'
+        ' "created": 1451624400000,'
+        ' "updated": 1483246800000'
         '}');
     assert(toDo.name == "Test ToDoSerializer");
     assert(toDo.completed == true);
     assert(toDo.created == new DateTime(2016));
     assert(toDo.updated == new DateTime(2017));
+  });
+
+  test("Test", () async{
+    List<ToDo> items = [new ToDo()
+      ..name = "Test ToDoSerializer"
+      ..completed = true
+      ..created = new DateTime(2016)
+      ..updated = new DateTime(2017), new ToDo()
+      ..name = "Test List"
+      ..completed = false
+      ..created = new DateTime(2016)
+      ..updated = new DateTime(2017)];
+    String encoded = JSON.encode(items);
+    List<ToDo> decodedItems = [];
+    for (var i in JSON.decode(encoded)) {
+      decodedItems.add(new ToDoSerializer().fromJSON(i));
+    }
   });
 }

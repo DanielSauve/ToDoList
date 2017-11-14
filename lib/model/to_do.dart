@@ -5,18 +5,17 @@ class ToDo {
   DateTime updated;
   bool completed;
   String name;
+
+  String toJson() {
+    return new ToDoSerializer().toJson(this);
+  }
 }
 
 class ToDoSerializer {
   const ToDoSerializer();
 
   String toJson(ToDo toDo) {
-    return '{\n'
-        '  "completed": ${toDo.completed},\n'
-        '  "name": "${toDo.name}",\n'
-        '  "created": ${toDo.created.millisecondsSinceEpoch},\n'
-        '  "updated": ${toDo.updated.millisecondsSinceEpoch}\n'
-        '}';
+    return '{"completed": ${toDo.completed}, "name": "${toDo.name}", "created": ${toDo.created.millisecondsSinceEpoch}, "updated": ${toDo.updated.millisecondsSinceEpoch}}';
   }
 
   ToDo fromJSON(String json) {

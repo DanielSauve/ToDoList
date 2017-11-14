@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'components/to_do_list_item.dart';
 import 'model/to_do.dart';
@@ -33,6 +38,32 @@ class ToDoList extends StatefulWidget {
 class _ToDoListState extends State<ToDoList> {
   List<ToDo> items = [];
 
+  @override
+  void initState() {
+    super.initState();
+    _readFile().then((String str) {
+      for (var i in JSON.decode(str)){
+        setState(() => items.add(new ToDoSerializer().fromJSON(i)));
+      }
+    });
+  }
+
+  Future<File> _getLocalFile() async {
+    // get the path to the document directory.
+    String dir = (await getApplicationDocumentsDirectory()).path;
+    return new File('$dir/list.json');
+  }
+
+  Future<String> _readFile()async {
+    try {
+      File file = await _getLocalFile();
+      String contents = await file.readAsString();
+      return contents;
+    } on FileSystemException {
+      return "";
+    }
+  }
+
   void _addNewItem() {
     final TextEditingController _controller = new TextEditingController();
     showDialog(
@@ -55,6 +86,7 @@ class _ToDoListState extends State<ToDoList> {
                       ..created = new DateTime.now()
                       ..updated = new DateTime.now());
                   });
+                  _getLocalFile().then((File file) => file.writeAsString(JSON.encode(items)));
                   Navigator.of(context).pop();
                 },
                 child: new Text("Save"))
